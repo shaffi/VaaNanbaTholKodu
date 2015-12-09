@@ -9,32 +9,37 @@ var jsonHelper = require("../helpers/json");
 var response = require("../helpers/common").response;
 var processError = require('../helpers/common').error;
 
-exports.uploadimage = function(req,res){
-  //var data = req.body.imageurl;
-  var imageStream = fs.createReadStream(req.files.image.path, { encoding: 'binary' }),
-  cloudStream = cloudinary.uploader.upload_stream(function() {
-    res.send('success');
-  });
-  imageStream.on('data', cloudStream.write).on('end', cloudStream.end);
-  //cloudinary.uploader.upload(req.body, function(result) {
-    //console.log(result);
-    //res.send(""+result.url);
-  //});
-}
-
+//Join a user to the app
 exports.createUserProfile = function(req, res, next){
-  jsonHelper.getUserModel(req.body, function(newUser){
-    User.find({"mobile": newUser.mobile}, function(err, user){
-      if(err) processError(err, req, res);
-      if(user != null && user != ""){
-          res.send(new response("User already exists with this mobile number"));
-      }
-      else {
+  var imageType = req.body.imagetype;
+  var imageUri = req.body.image;
+  var mobile = req.body.mobile;
+  User.find({"mobile": mobile}, function(err, user){
+    if(user != null && user != ""){
+        res.send(new response("User already exists with this mobile number"));
+    }
+    else {
+      jsonHelper.getUserModel(req.body, function(newUser){
         newUser.save(function(err, user){
           if(err) processError(err, req, res);
+          mobile = user.mobile;
           res.send(new response(user));
+          updateImageToCloud(imageType, imageUri, mobile, function(){
+            console.log("Profile image uploaded");
+          });
         });
-      }
+      });
+    }
+  });
+}
+
+function updateImageToCloud(type, uri,  mobile, callback){
+  cloudinary.uploader.upload("data:"+type+";base64,"+uri, function(result) {
+    User.findOne({"mobile": mobile}, function(err, user){
+      user.image = result.url;
+      user.save(function(err, user){
+        callback();
+      });
     });
   });
 }
