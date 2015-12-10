@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var User = require('../models/user');
+var Support = require('../models/support');
 
 module.exports.getUserModel = function(data, callback){
   var newUser = new User ({
@@ -21,4 +22,17 @@ module.exports.getUserModel = function(data, callback){
     social_google: data.social_google
   });
   callback(newUser);
+}
+
+
+module.exports.Support = function(data,callback){
+  var supportUser =new Support({
+    name : data.name,
+    mobile: data.mobile,
+    time_from : data.time_from,
+    time_to : data.time_to,
+    address : data.address,
+    type : data.type
+    });
+    callback(supportUser);
 }
