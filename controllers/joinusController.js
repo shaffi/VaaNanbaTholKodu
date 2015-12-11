@@ -21,7 +21,7 @@ exports.createUserProfile = function(req, res, next){
     else {
       jsonHelper.getUserModel(req.body, function(newUser){
         newUser.save(function(err, user){
-          if(err) processError(err, req, res);
+         if(err) processError(err, req, res);
           mobile = user.mobile;
           res.send(new response(user));
           updateImageToCloud(imageType, imageUri, mobile, function(){

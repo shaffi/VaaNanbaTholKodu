@@ -25,10 +25,12 @@ module.exports.getUserModel = function(data, callback){
 }
 
 
-module.exports.Support = function(data,callback){
+module.exports.SupportModel = function(data,callback){
   var supportUser =new Support({
     name : data.name,
     mobile: data.mobile,
+    blood: data.blood,
+    altnum: data.altnum,
     time_from : data.time_from,
     time_to : data.time_to,
     address : data.address,
