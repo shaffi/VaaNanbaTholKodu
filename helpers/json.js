@@ -19,13 +19,14 @@ module.exports.getUserModel = function(data, callback){
     know_others: data.know_others,
     social_fb: data.social_fb,
     social_twitter: data.social_twitter,
-    social_google: data.social_google
+    social_google: data.social_google,
+    comments : data.comments
   });
   callback(newUser);
 }
 
 
-module.exports.SupportModel = function(data,callback){
+module.exports.SupportModel = function(data, callback){
   var supportUser =new Support({
     name : data.name,
     mobile: data.mobile,
@@ -37,4 +38,4 @@ module.exports.SupportModel = function(data,callback){
     type : data.type
     });
     callback(supportUser);
-}
+} 

@@ -22,11 +22,14 @@ exports.createUserProfile = function(req, res, next){
       jsonHelper.getUserModel(req.body, function(newUser){
         newUser.save(function(err, user){
          if(err) processError(err, req, res);
+         console.log(user);
           mobile = user.mobile;
           res.send(new response(user));
-          updateImageToCloud(imageType, imageUri, mobile, function(){
+          if(typeof imageType != 'undefined'){
+            updateImageToCloud(imageType, imageUri, mobile, function(){
             console.log("Profile image uploaded");
-          });
+            });
+          }
         });
       });
     }
@@ -40,6 +43,23 @@ function updateImageToCloud(type, uri,  mobile, callback){
       user.save(function(err, user){
         callback();
       });
+    });
+  });
+}
+
+
+exports.contactUs = function(req, res){
+  var comments = req.body.comments;
+  var id = req.body._id;
+  console.log(comments + " sd" + id);
+  User.findOne(id, function(err, user){
+  if(err)processError(err,req,res);
+  user.comments = comments;
+  user.save(function(err, user)
+    {
+      if(err)processError(err,req,res);
+      console.log("contact us");
+      res.send("user comments are:"+ user.comments);
     });
   });
 }

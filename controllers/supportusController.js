@@ -12,7 +12,7 @@ var response = require("../helpers/common").response;
 var processError = require("../helpers/common").error;
 
 //support us to the app
-exports.Support =function(req,res,next){
+exports.supportUS =function(req,res,next){
 var mobile = req.body.mobile;
   Support.find({"mobile": mobile}, function(err, user){
     if(user != null && user != ""){
@@ -31,7 +31,7 @@ var mobile = req.body.mobile;
 });
 }
 
-exports.blood =function(req,res,next){
+exports.supportForBlood = function(req,res,next){
   var mobile = req.body.mobile;
   Support.find({"mobile": mobile}, function(err, user){
     if(user != null && user !=""){

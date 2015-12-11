@@ -17,7 +17,8 @@ var userSchema = new mongoose.Schema({
   address: String,
   social_fb: String,
   social_twitter: String,
-  social_google: String
+  social_google: String,
+  comments : String
 }, { collection : 'user'});
 
 var User = mongoose.model('user', userSchema);
