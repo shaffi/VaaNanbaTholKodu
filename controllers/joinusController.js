@@ -114,13 +114,3 @@ exports.userImage = function(req,res){
     res.send(new response(img));
   });
 }
-
-
-exports.loadProfile = function(req,res){
-  var id = req.body._id;
-  User.findById(id,function(err,user){
-    if(err) processError (err,req,res)
-    console.log(user);
-    res.send(new response(user));
-  });
-}
