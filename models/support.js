@@ -11,7 +11,7 @@ var supportSchema = new mongoose.Schema({
   type: String
 }, { collection: 'support'});
 
+mongoose.plugin(require('mongoose-list'));
 var Support = mongoose.model('support', supportSchema);
 
 module.exports = Support;
- 

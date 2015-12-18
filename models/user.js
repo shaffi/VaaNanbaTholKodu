@@ -21,6 +21,8 @@ var userSchema = new mongoose.Schema({
   comments : String
 }, { collection : 'user'});
 
+
+mongoose.plugin(require('mongoose-list'),{searchFields: ['name']});
 var User = mongoose.model('user', userSchema);
 
 module.exports = User;

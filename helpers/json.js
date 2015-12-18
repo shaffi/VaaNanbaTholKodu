@@ -38,4 +38,4 @@ module.exports.SupportModel = function(data, callback){
     type : data.type
     });
     callback(supportUser);
-} 
+}
