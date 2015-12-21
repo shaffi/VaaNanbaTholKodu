@@ -22,7 +22,7 @@ var userSchema = new mongoose.Schema({
 }, { collection : 'user'});
 
 
-mongoose.plugin(require('mongoose-list'),{searchFields: ['name']});
+mongoose.plugin(require('mongoose-list'));
 var User = mongoose.model('user', userSchema);
 
 module.exports = User;

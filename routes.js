@@ -10,5 +10,6 @@ module.exports = function(app){
   app.post('/api/memberlist', joinusController.memberList);
   app.post('/api/supporterMemberList',supportusController.supporterMemberList);
   app.post('/api/userimage',joinusController.userImage);
-  app.post('/api/loadprofile',joinusController.loadProfile);
+  app.post('/api/membersearch',joinusController.memberSearch);
+
 }

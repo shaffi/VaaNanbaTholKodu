@@ -78,7 +78,6 @@ exports.memberList = function(req, res, next){
     user.forEach(function(){
       inc++;
     });
-    console.log(inc);
     if(limit <= count){
       if(inc != 0){
         res.send(JSON.stringify(user));
@@ -100,17 +99,31 @@ exports.memberList = function(req, res, next){
 
 
 exports.userImage = function(req,res){
-//  var imageType = req.body.imagetype;
-  //var imageuri = req.body.image;
   var id = req.body._id;
   User.findById(id,function(err,user){
-    console.log(user);
     if(err) processError (err,req,res);
     var img= user.image;
     console.log("image is:" + user.image);
-    //cloudinary.api.resources(function(user){
-   //res.send({ images: user.resources});
- //});
     res.send(new response(img));
   });
+}
+
+
+exports.memberSearch = function(req,res,next){
+  var  member = req.body.member;
+  var charsearch = /[+-]/g;
+  var result = member.match(charsearch);
+  if(result != "" && result !=null)
+  {
+  User.find({"blood" : member},function(err,user){
+    if(err) processError (err,req,res);
+    res.send(JSON.stringify(user));
+  });
+  }
+else{
+  User.find({"name" :member},function(err,user){
+    if(err) processError (err,req,res);
+    res.send(JSON.stringify(user));
+  });
+}
 }
