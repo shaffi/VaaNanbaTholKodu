@@ -183,11 +183,12 @@ exports.updateProfile = function(req, res, next){
 
 
 exports.updateImages = function(req,res,next){
+  debugger;
   var id = req.body.id;
   var imageUri = req.body.image;
   var imageType = req.body.imagetype;
   User.findById(id, function(err, user){
-    if(user!= null && user!= "")
+    if(user != null && user != "")
     {
     console.log(user);
      cloudinary.uploader.upload("data:"+imageType+";base64,"+imageUri, function(result) {
@@ -201,7 +202,7 @@ exports.updateImages = function(req,res,next){
      });
    }
    else {
-       res.status(200).send("No more user");
+       res.status(200).send("No user");
        return next();
    }
     });

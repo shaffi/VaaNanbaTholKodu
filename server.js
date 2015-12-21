@@ -43,7 +43,7 @@ process.on('uncaughtException', function (err) {
 
 app.use(function(err, req, res, next){
     console.error(err.stack);
-    res.status(500).send('Something went wrong!');
+    res.status(500).send(new response('Data Something went wrong!'));
 });
 
 //starts and listen to the port
