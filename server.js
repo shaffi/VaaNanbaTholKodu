@@ -35,7 +35,7 @@ cloudinary.config({cloud_name: config.cloudinary.cloud_name,
 });
 
 //connect to the DB
-var dbcon = process.env.MONGOURI || config.database.url;
+var dbcon = process.env.MONGOLAB_URI || config.database.url;
 
 db.connect(dbcon, config.database.options);
 
