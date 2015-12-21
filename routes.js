@@ -8,8 +8,10 @@ module.exports = function(app){
   app.post('/api/supportblood',supportusController.supportForBlood);
   app.post('/api/contactus', joinusController.contactUs);
   app.post('/api/memberlist', joinusController.memberList);
-  app.post('/api/supporterMemberList',supportusController.supporterMemberList);
-  app.post('/api/userimage',joinusController.userImage);
+  app.post('/api/supportermemberlist',supportusController.supporterMemberList);
+  app.get('/api/userimage/:id',joinusController.userImage);
   app.post('/api/membersearch',joinusController.memberSearch);
+  app.post('/api/updateimages',joinusController.updateImages);
+  app.post('/api/updateprofile',joinusController.updateProfile);
 
 }

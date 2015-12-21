@@ -7,6 +7,21 @@ var config = require('./helpers/config');
 var db = require('./helpers/db');
 var routes = require('./routes');
 
+var cluster = require('cluster');
+var numCPUs = require('os').cpus().length;
+
+if (cluster.isMaster) {
+  // Fork workers.
+  for (var i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on('exit', function(worker, code, signal) {
+    console.log('worker ' + worker.process.pid + ' died');
+    cluster.fork();
+  });
+
+} else {
 var app = express();
 var port = Number(process.env.PORT) || '5451';
 
@@ -22,6 +37,14 @@ cloudinary.config({cloud_name: config.cloudinary.cloud_name,
 //connect to the DB
 db.connect(config.database.url, config.database.options);
 
+process.on('uncaughtException', function (err) {
+  console.log('Caught exception: ' + err);
+});
+
+app.use(function(err, req, res, next){
+    console.error(err.stack);
+    res.status(500).send('Something went wrong!');
+});
 
 //starts and listen to the port
 app.listen(port, function(){
@@ -29,3 +52,5 @@ app.listen(port, function(){
 });
 
 routes(app);
+
+}
