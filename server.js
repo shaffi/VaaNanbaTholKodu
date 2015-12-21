@@ -35,7 +35,9 @@ cloudinary.config({cloud_name: config.cloudinary.cloud_name,
 });
 
 //connect to the DB
-db.connect(config.database.url, config.database.options);
+var dbcon = process.env.MONGOURI || config.database.url;
+
+db.connect(dbcon, config.database.options);
 
 process.on('uncaughtException', function (err) {
   console.log('Caught exception: ' + err);
