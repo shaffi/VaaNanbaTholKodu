@@ -8,7 +8,7 @@ var db = require('./helpers/db');
 var routes = require('./routes');
 
 var cluster = require('cluster');
-var numCPUs = require('os').cpus().length;
+var numCPUs = require('os').cpus().length /2 ;
 
 if (cluster.isMaster) {
   // Fork workers.
