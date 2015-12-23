@@ -147,8 +147,8 @@ exports.updateProfile = function(req, res, next){
  var know_others = req.body.know_others;
  var address = req.body.address;
  var social_fb = req.body.social_fb;
- var social_twitter = social_twitter;
- var social_google = social_google;
+ var social_twitter = req.body.social_twitter;
+ var social_google = req.body.social_google;
  var comments = req.body.comments;
  var id = req.body._id;
 
@@ -171,6 +171,7 @@ exports.updateProfile = function(req, res, next){
  user.social_fb = social_fb;
  user.social_twitter = social_twitter;
  user.social_google = social_google;
+ user.comments = comments;
 
  user.save(function(err, user) {
   if(err) next(err);
