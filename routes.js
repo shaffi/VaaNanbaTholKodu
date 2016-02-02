@@ -13,6 +13,7 @@ module.exports = function(app){
   app.post('/api/membersearch',joinusController.memberSearch);
   app.post('/api/updateimages',joinusController.updateImages);
   app.post('/api/updateprofile',joinusController.updateProfile);
+  app.get('/api/viewprofile/:id',joinusController.viewProfile);
 
 }
  

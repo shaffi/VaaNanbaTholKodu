@@ -68,6 +68,7 @@ exports.memberList = function(req, res, next){
   var inc = 0;
   var limit = req.body.limit;
   var start = req.body.start;
+
   User.list({ start: start , limit: limit , sort: 'name'},function(err,count,user){
     if(err) return next(err);
     user.forEach(function(){
@@ -184,7 +185,6 @@ exports.updateProfile = function(req, res, next){
 
 
 exports.updateImages = function(req,res,next){
-  debugger;
   var id = req.body.id;
   var imageUri = req.body.image;
   var imageType = req.body.imagetype;
@@ -208,3 +208,13 @@ exports.updateImages = function(req,res,next){
    }
     });
    }
+
+
+exports.viewProfile = function(req,res,next){
+  var id = req.params.id;
+  User.findById(id,function(err,user){
+    if(err) return next(err);
+    res.status(200).send(new response(user));
+    return next();
+  });
+}
