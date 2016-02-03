@@ -7,7 +7,7 @@ module.exports = function(app){
   app.post('/api/supportus',supportusController.supportUS);
   app.post('/api/supportblood',supportusController.supportForBlood);
   app.post('/api/contactus', joinusController.contactUs);
-  app.get('/api/memberlist', joinusController.memberList);
+  app.post('/api/memberlist', joinusController.memberList);
   app.post('/api/supportermemberlist',supportusController.supporterMemberList);
   app.get('/api/userimage/:id',joinusController.userImage);
   app.post('/api/membersearch',joinusController.memberSearch);
