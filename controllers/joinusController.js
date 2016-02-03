@@ -65,36 +65,11 @@ exports.contactUs = function(req, res,next){
 
 
 exports.memberList = function(req, res, next){
-  var inc = 0;
-  var limit = req.body.limit;
-  var start = req.body.start;
-
-  User.list({ start: start , limit: limit , sort: 'name'},function(err,count,user){
-    if(err) return next(err);
-    user.forEach(function(){
-      inc++;
-    });
-    if(limit <= count){
-      if(inc != 0){
-        res.status(200).send(JSON.stringify(user));
-        return next();
-      }
-      else {
-        res.status(200).send("No more user");
-        return next();
-      }
-    }
-    else {
-      if(inc != 0){
-        res.status(200).send(JSON.stringify(user));
-        return next();
-      }
-      else {
-        res.status(200).send("No more user");
-        return next();
-      }
-    }
-  });
+ User.find({},function(err,user){
+   if(err) return next(err);
+   res.status(200).send(new response(user));
+   return next();
+ });
 }
 
 
