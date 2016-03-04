@@ -2,11 +2,13 @@
 var mongoose = require('mongoose');
 var cloudinary = require('cloudinary');
 var bodyParser = require("body-parser");
+var path = require('path');
 
 //models
-var User = require('../models/user');
-var jsonHelper = require("../helpers/json");
-var response = require("../helpers/common").response;
+var User = require('../models/user.js');
+var jsonHelper = require("../helpers/json.js");
+var response = require("../helpers/common.js").response;
+var mail = require("../helpers/mail.js");
 
 //Join a user to the app
 exports.createUserProfile = function(req, res, next){
@@ -47,6 +49,7 @@ function updateImageToCloud(type, uri,  mobile, callback){
   });
 }
 
+//contact a user to the app
 exports.contactUs = function(req, res,next){
   var comments = req.body.comments;
   var id = req.body._id;
@@ -63,7 +66,7 @@ exports.contactUs = function(req, res,next){
   });
 }
 
-
+//Listing the members present
 exports.memberList = function(req, res, next){
    var inc = 0;
    var limit = req.body.limit;
@@ -97,18 +100,18 @@ exports.memberList = function(req, res, next){
    });
  }
 
-
+//viewing the userimage
 exports.userImage = function(req,res,next){
-  var id = req.params.id;
-  User.findById(id,function(err,user){
-    if(err) return next(err);
-    var img= user.image;
-    res.status(200).send(new response(img));
-    return next();
-  });
+    var id = req.params.id;
+    User.findById(id,function(err,user){
+      if(err) return next(err);
+      var img= user.image;
+      res.status(200).send(new response(img));
+      return next();
+    });
 }
 
-
+//Searching the member based on name or bloodgroup
 exports.memberSearch = function(req,res,next){
   var  member = req.body.member;
   var charsearch = /[+-]/g;
@@ -131,12 +134,13 @@ else{
 }
 
 
-
+//updating a user profile
 exports.updateProfile = function(req, res, next){
 
  var name = req.body.name;
  var mobile = req.body.mobile;
  var emergency = req.body.emergency;
+ var _password = req.body._password;
  var dob = req.body.dob;
  var email = req.body.email;
  var about = req.body.about;
@@ -147,6 +151,9 @@ exports.updateProfile = function(req, res, next){
  var know_social = req.body.know_social;
  var know_others = req.body.know_others;
  var address = req.body.address;
+ var city = req.body.city;
+ var state = req.body.state;
+ var zipcode = req.body.zipcode;
  var social_fb = req.body.social_fb;
  var social_twitter = req.body.social_twitter;
  var social_google = req.body.social_google;
@@ -159,6 +166,7 @@ exports.updateProfile = function(req, res, next){
  user.mobile = mobile;
  user.comments = comments;
  user.emergency = emergency;
+ user._password = _password;
  user.dob = dob;
  user.email = email;
  user.about = about;
@@ -169,6 +177,9 @@ exports.updateProfile = function(req, res, next){
  user.know_social = know_social;
  user.know_others = know_others;
  user.address = address;
+ user.city = city;
+ user.state = state;
+ user.zipcode = zipcode;
  user.social_fb = social_fb;
  user.social_twitter = social_twitter;
  user.social_google = social_google;
@@ -183,7 +194,30 @@ exports.updateProfile = function(req, res, next){
 });
 }
 
-
+//user sign in
+debugger;
+exports.signIn = function(req,res,next){
+  var mobile = req.body.mobile;
+  var _password = req.body._password;
+  User.findOne({"mobile": mobile}, function(err, user) {
+    if(user!= null && user!= "") {
+       if(user._password== _password) {
+          console.log(user._password);
+          res.status(200).send("Sign in" +user);
+          return next();
+              }
+        else {
+                res.status(200).send("Invalid or password");
+                return next();
+             }
+       }
+      else {
+        res.status(200).send("Invalid mobile number or password");
+        return next();
+      }
+});
+}
+//Update user image
 exports.updateImages = function(req,res,next){
   var id = req.body.id;
   var imageUri = req.body.image;
@@ -209,12 +243,88 @@ exports.updateImages = function(req,res,next){
     });
    }
 
-
+//Viewing the user profile
 exports.viewProfile = function(req,res,next){
   var id = req.params.id;
   User.findById(id,function(err,user){
     if(err) return next(err);
     res.status(200).send(new response(user));
     return next();
+  });
+}
+
+
+//Forgot password
+exports.forgotPassword = function(req, res, next){
+var email = req.params.email;
+console.log(email)
+User.findOne({'email':email}, function(err, user){
+  if(err){
+    res.status(400).send('Error looking up for email');
+    return next();
+  } else if(user) {
+    mail.sendMail(user.email, 0, user.name, user._id, function(result){
+        if(result == 1){
+          res.status(400).send('Error sending mail');
+          return next();
+        } else {
+        res.status(200).send('Mail Sent');
+        return next();
+      }
+      });
+  } else {
+    res.status(400).send('No user found');
+    return next();
+  }
+})
+
+}
+
+//sending the password file
+exports.sendPasswordFile = function(req, res, next) {
+  var id = req.params.id;
+  var link = "http://127.0.0.1:52320/api/forgotpassword/"+id;
+  User.findById(id,function(err,user){
+    if(user != null && user != ""){
+    console.log(link);
+    res.sendFile(path.resolve(__dirname, '../views', 'index.html'));
+    return next();
+  }
+  else {
+    res.status(200).send("Sorry ,You are not an authorised user");
+    return next();
+  }
+});
+}
+
+//Resetting Password
+exports.changePassword = function(req,res,next){
+ var id = req.body._id;
+ var _password = req.body._password;
+ User.findById(id,function(err, user){
+ if(err) return next(err);
+ user._password = _password;
+ user.save(function(err, user)
+   {
+    if(err) throw err;
+     console.log(user.name);
+     res.status(200).send("Password Successfully resetted"+ user._password);
+     console.log(user._password);
+     return next();
+   });
+ });
+}
+//user log out
+exports.logout = function(req,res,next){
+  var id = req.params.id;
+  User.findById(id,function(err,user){
+    if(user!= null && user!= ""){
+       res.status(200).send("Logged out Successfully");
+       return next();
+     }
+     else {
+       res.status(200).send("Invalid User");
+       return next();
+     }
   });
 }

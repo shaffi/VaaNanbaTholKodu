@@ -14,5 +14,9 @@ module.exports = function(app){
   app.post('/api/updateimages',joinusController.updateImages);
   app.post('/api/updateprofile',joinusController.updateProfile);
   app.get('/api/viewprofile/:id',joinusController.viewProfile);
-
+  app.post('/api/signin',joinusController.signIn);
+  app.post('/api/forgotpassword/:email',joinusController.forgotPassword);
+  app.post('/api/logout/:id',joinusController.logout);
+  app.get('/api/sendfile/:id',joinusController.sendPasswordFile);
+  app.post('/api/changepassword',joinusController.changePassword);
 }
