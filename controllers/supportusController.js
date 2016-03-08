@@ -2,12 +2,12 @@
 //modules
 var mongoose =require('mongoose');
 var cloudinary =require('cloudinary');
-var bodyParser =require("body-parser");
+var bodyParser =require('body-parser');
+var path = require('path');
 
 //models
 var User = require('../models/user');
 var Support = require('../models/support');
-
 var jsonHelper = require("../helpers/json");
 var response = require("../helpers/common").response;
 
@@ -33,7 +33,8 @@ var mobile = req.body.mobile;
 });
 }
 
-exports.supportForBlood = function(req,res,next){
+//material support
+exports.materialSupport = function(req,res,next){
   var mobile = req.body.mobile;
   Support.find({"mobile": mobile}, function(err, user){
     if(user != null && user !=""){
@@ -47,7 +48,7 @@ exports.supportForBlood = function(req,res,next){
     supportUser.save(function(err,Support){
       if(err) return next(err);
       res.status(200).send(new response(Support));
-      console.log("Supported  for blood");
+      console.log("Supported  for material");
       return next();
     });
   });

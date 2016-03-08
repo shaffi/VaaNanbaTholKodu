@@ -207,7 +207,7 @@ exports.signIn = function(req,res,next){
           return next();
               }
         else {
-                res.status(200).send("Invalid or password");
+                res.status(200).send("Invalid  password");
                 return next();
              }
        }

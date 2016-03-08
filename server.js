@@ -6,6 +6,7 @@ var cloudinary = require('cloudinary');
 var config = require('./helpers/config');
 var db = require('./helpers/db');
 var routes = require('./routes');
+var response = require("./helpers/common").response;
 
 var cluster = require('cluster');
 var numCPUs = require('os').cpus().length /2 ;

@@ -1,13 +1,16 @@
-var mongoose = require("mongoose");
+var mongoose = require('mongoose');
 
 var supportSchema = new mongoose.Schema({
   name: String,
   mobile: Number,
-  altnum: Number,
-  blood: String,
+  day: String,
+  month: String,
   time_from: String,
   time_to: String,
-  address: String,
+  street: String,
+  city: String,
+  state: String,
+  zipcode: Number,
   type: String
 }, { collection: 'support'});
 

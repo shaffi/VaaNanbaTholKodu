@@ -32,14 +32,17 @@ module.exports.getUserModel = function(data, callback){
 
 module.exports.SupportModel = function(data, callback){
   var supportUser =new Support({
-    name : data.name,
+    name: data.name,
     mobile: data.mobile,
-    blood: data.blood,
-    altnum: data.altnum,
-    time_from : data.time_from,
-    time_to : data.time_to,
-    address : data.address,
-    type : data.type
+    day: data.day,
+    month: data.month,
+    time_from: data.time_from,
+    time_to: data.time_to,
+    street: data.street,
+    city: data.city,
+    state:  data.state,
+    zipcode: data.zipcode,
+    type: data.type
     });
     callback(supportUser);
 }
