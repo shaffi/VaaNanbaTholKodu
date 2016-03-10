@@ -19,9 +19,6 @@ var userSchema = new mongoose.Schema({
   city: String,
   state: String,
   zipcode: Number,
-  social_fb: String,
-  social_twitter: String,
-  social_google: String,
   comments : String
 }, { collection : 'user'});
 
