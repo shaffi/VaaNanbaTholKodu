@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var userSchema = new mongoose.Schema({
   name: {type: String, required: true},
   mobile: {type: Number, required:true, unique: true},
-  emergency: {type: Number, required:true},
+  altnum: {type: Number, required:true},
   _password: {type: String, required: true},
   dob: String,
   email: {type: String, required: true},
@@ -12,7 +12,6 @@ var userSchema = new mongoose.Schema({
   blood: String,
   image: String,
   know_friend: String,
-  know_friendno: Number,
   know_social: String,
   know_others: String,
   street: String,
