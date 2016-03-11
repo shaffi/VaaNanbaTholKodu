@@ -6,7 +6,7 @@ module.exports.getUserModel = function(data, callback){
   var newUser = new User ({
     name: data.name,
     mobile: data.mobile,
-    emergency: data.emergency,
+    altnum: data.altnum,
     _password: data._password,
     dob: data.dob,
     email: data.email,
@@ -18,12 +18,8 @@ module.exports.getUserModel = function(data, callback){
     state: data.state,
     zipcode: data.zipcode,
     know_friend: data.know_friend,
-    know_friendno: data.know_friendno,
     know_social: data.know_social,
     know_others: data.know_others,
-    social_fb: data.social_fb,
-    social_twitter: data.social_twitter,
-    social_google: data.social_google,
     comments : data.comments
   });
   callback(newUser);
