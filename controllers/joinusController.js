@@ -136,10 +136,9 @@ else{
 
 //updating a user profile
 exports.updateProfile = function(req, res, next){
-
  var name = req.body.name;
  var mobile = req.body.mobile;
- var emergency = req.body.emergency;
+ var altnum = req.body.altnum;
  var _password = req.body._password;
  var dob = req.body.dob;
  var email = req.body.email;
@@ -150,13 +149,10 @@ exports.updateProfile = function(req, res, next){
  var know_friendno = req.body.know_friendno;
  var know_social = req.body.know_social;
  var know_others = req.body.know_others;
- var address = req.body.address;
+ var street = req.body.street;
  var city = req.body.city;
  var state = req.body.state;
  var zipcode = req.body.zipcode;
- var social_fb = req.body.social_fb;
- var social_twitter = req.body.social_twitter;
- var social_google = req.body.social_google;
  var comments = req.body.comments;
  var id = req.body._id;
 
@@ -164,8 +160,7 @@ exports.updateProfile = function(req, res, next){
  if(err) return next(err);
  user.name = name;
  user.mobile = mobile;
- user.comments = comments;
- user.emergency = emergency;
+ user.altnum = altnum;
  user._password = _password;
  user.dob = dob;
  user.email = email;
@@ -176,13 +171,10 @@ exports.updateProfile = function(req, res, next){
  user.know_friendno = know_friendno;
  user.know_social = know_social;
  user.know_others = know_others;
- user.address = address;
+ user.street = street;
  user.city = city;
  user.state = state;
  user.zipcode = zipcode;
- user.social_fb = social_fb;
- user.social_twitter = social_twitter;
- user.social_google = social_google;
  user.comments = comments;
 
  user.save(function(err, user) {
@@ -195,7 +187,6 @@ exports.updateProfile = function(req, res, next){
 }
 
 //user sign in
-debugger;
 exports.signIn = function(req,res,next){
   var mobile = req.body.mobile;
   var _password = req.body._password;
