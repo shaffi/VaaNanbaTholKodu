@@ -12,6 +12,7 @@ var userSchema = new mongoose.Schema({
   blood: String,
   image: String,
   know_friend: String,
+  know_friendno: Number,
   know_social: String,
   know_others: String,
   street: String,

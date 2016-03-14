@@ -18,6 +18,7 @@ module.exports.getUserModel = function(data, callback){
     state: data.state,
     zipcode: data.zipcode,
     know_friend: data.know_friend,
+    know_friendno: data.know_friendno,
     know_social: data.know_social,
     know_others: data.know_others,
     comments : data.comments
