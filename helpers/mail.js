@@ -14,7 +14,7 @@ function sendMail(to, body, name, id, callback){
 
   switch(body){
     case 0:
-      link = "http://127.0.0.1:52320/api/forgotpassword/"+id
+      link = "http://vaananba.herokuapp.com/api/forgotpassword/"+id
       subject = "VaaNanbaTholKodu - Forgot Password",
       html = "Hello " + name + ", <br> Please click <a href="+ link + ">here</a> to change your password";
       break;
