@@ -8,21 +8,7 @@ var db = require('./helpers/db');
 var routes = require('./routes');
 var response = require("./helpers/common").response;
 
-var cluster = require('cluster');
-var numCPUs = require('os').cpus().length /2 ;
 
-if (cluster.isMaster) {
-  // Fork workers.
-  for (var i = 0; i < numCPUs; i++) {
-    cluster.fork();
-  }
-
-  cluster.on('exit', function(worker, code, signal) {
-    console.log('worker ' + worker.process.pid + ' died');
-    cluster.fork();
-  });
-
-} else {
 var app = express();
 var port = Number(process.env.PORT) || '5451';
 
@@ -55,5 +41,3 @@ app.listen(port, function(){
 });
 
 routes(app);
-
-}
