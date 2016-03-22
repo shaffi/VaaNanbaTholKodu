@@ -15,7 +15,7 @@ exports.createUserProfile = function(req, res, next){
   var imageType = req.body.imagetype;
   var imageUri = req.body.image;
   var mobile = req.body.mobile;
-
+  console.log("Adding user");
 
   User.find({"mobile": mobile}, function(err, user){
     if(user != null && user != ""){
