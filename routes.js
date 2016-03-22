@@ -4,6 +4,11 @@ var supportusController = require('./controllers/supportusController');
 var path = require('path');
 
 module.exports = function(app){
+
+  app.get('/', function(req, res) {
+  res.status(200).send( {Welcome: true});
+});
+
   app.post('/api/user', joinusController.createUserProfile);
   app.post('/api/supportus',supportusController.supportUS);
   app.post('/api/materialsupport',supportusController.materialSupport);

@@ -37,7 +37,7 @@ if (cluster.isMaster) {
   }
 
 } else {
-  server;
+  server();
   //allow 30mins [+ upto 9min] lifetime for this worker
   var shutdownTimeoutInMin = 30 + Math.floor( Math.random() * 10);
   console.log("Worker PID#" + process.pid + " got " + shutdownTimeoutInMin + "mins to live");

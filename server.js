@@ -4,12 +4,12 @@ var express = require('express');
 var path = require('path');
 var cloudinary = require('cloudinary');
 var config = require('./helpers/config');
-var db = require('./helpers/db');
+var db = require('./db.js');
 var routes = require('./routes');
 var response = require("./helpers/common").response;
 
 var app = express();
-var port = Number(process.env.PORT) || '5451';
+//var port = Number(process.env.PORT) || '5451';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -20,23 +20,52 @@ app.use(bodyParser.urlencoded({ extended: false }));
   api_secret: config.cloudinary.api_secret
 });
 
-//connect to the DB
-var dbcon = process.env.MONGOLAB_URI || config.database.url;
+console.log("Starting up the server");
+console.log("Connecting to MongoDB");
 
-db.connect(dbcon, config.database.options);
+function start(cb) {
+  cb = cb || function(err){
+    if(err){
+      throw err;
+    }
+  };
+  var m = db.connect(function (err) {
+    if (err) {
+      throw err;
+        console.log(err);
+      process.exit(-1);
+    }
 
-process.on('uncaughtException', function (err) {
-  console.log('Caught exception: ' + err);
-});
+    // Initialize the database
+    db.init(function (err) {
+      if (err) {
+        console.log("Error initializing DB");
+        process.exit(-1);
+      }
 
-app.use(function(err, req, res, next){
-    console.error(err.stack);
-    res.status(500).send(new response('Data Something went wrong!'));
-});
+      app.use(function(req,res,next){
+        req.db = m;
+        next();
+      });
+      require("./routes")(app);
 
-//starts and listen to the port
-app.listen(port, function(){
-  console.log("Server started in %d", port);
-});
+      app.listen(process.env.PORT || 5451, function (err) {
+        console.log(" Server listening ");
+        cb(err);
+      });
+    });
+  });
+}
+if (module.parent) {
+  module.exports = exports = start;
+} else {
+  start();
+}
 
-routes(app);
+module.exports.cleanup = function() {
+    console.log("Worker PID#" + process.pid + " stop accepting new connections");
+    app.close(function (err) {
+      console.log("Worker PID#" + process.pid + " shutting down!!!");
+      process.send({cmd: 'suicide'});
+    });
+}
