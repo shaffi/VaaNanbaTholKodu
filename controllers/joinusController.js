@@ -16,16 +16,20 @@ exports.createUserProfile = function(req, res, next){
   var imageUri = req.body.image;
   var mobile = req.body.mobile;
 
+
   User.find({"mobile": mobile}, function(err, user){
     if(user != null && user != ""){
         res.status(200).send(new response("User already exists with this mobile number"));
     }
     else {
       jsonHelper.getUserModel(req.body, function(newUser){
+        console.log("new user" + newUser);
         newUser.save(function(err, user){
          if(err) return next(err);
           mobile = user.mobile;
+          console.log("creating");
           res.status(200).send(new response(user));
+          console.log("user added");
           if(typeof imageType != 'undefined'){
             updateImageToCloud(imageType, imageUri, mobile, function(){
             console.log("Profile image uploaded");
@@ -272,13 +276,15 @@ User.findOne({'email':email}, function(err, user){
 }
 
 //sending the password file
+debugger;
 exports.sendPasswordFile = function(req, res, next) {
   var id = req.params.id;
-  var link = "http://vaananba.herokuapp.com/api/forgotpassword/"+id;
+  var link = "http://127.0.0.1:1234/api/sendfile"+id;
   User.findById(id,function(err,user){
     if(user != null && user != ""){
-    console.log(link);
-    res.sendFile(path.resolve(__dirname, '../views', 'index.html'));
+    console.log(id + "hjdk" + link);
+    res.status(200).sendFile(path.join(__dirname, '../views', 'index.html'));
+    console.log("sent!!");
     return next();
   }
   else {

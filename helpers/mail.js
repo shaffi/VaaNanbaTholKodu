@@ -1,4 +1,5 @@
 var mailer = require("nodemailer");
+var path = require('path');
 
 // Use Smtp Protocol to send Email
 var smtpTransport = mailer.createTransport("SMTP",{
@@ -14,7 +15,7 @@ function sendMail(to, body, name, id, callback){
 
   switch(body){
     case 0:
-      link = "http://vaananba.herokuapp.com/api/forgotpassword/"+id
+      link = "http://127.0.0.1:59792/api/sendfile/"+id
       subject = "VaaNanbaTholKodu - Forgot Password",
       html = "Hello " + name + ", <br> Please click <a href="+ link + ">here</a> to change your password";
       break;
