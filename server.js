@@ -4,12 +4,26 @@ var express = require('express');
 var path = require('path');
 var cloudinary = require('cloudinary');
 var config = require('./helpers/config');
-var db = require('./db.js');
+var db = require('./helpers/db');
 var routes = require('./routes');
-var response = require("./helpers/common").response;
 
+var cluster = require('cluster');
+var numCPUs = require('os').cpus().length /2 ;
+
+if (cluster.isMaster) {
+  // Fork workers.
+  for (var i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on('exit', function(worker, code, signal) {
+    console.log('worker ' + worker.process.pid + ' died');
+    cluster.fork();
+  });
+
+} else {
 var app = express();
-//var port = Number(process.env.PORT) || '5451';
+var port = Number(process.env.PORT) || '5451';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -20,52 +34,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
   api_secret: config.cloudinary.api_secret
 });
 
-console.log("Starting up the server");
-console.log("Connecting to MongoDB");
+//connect to the DB
+var dbcon = process.env.MONGOLAB_URI || config.database.url;
 
-function start(cb) {
-  cb = cb || function(err){
-    if(err){
-      throw err;
-    }
-  };
-  var m = db.connect(function (err) {
-    if (err) {
-      throw err;
-        console.log(err);
-      process.exit(-1);
-    }
+db.connect(dbcon, config.database.options);
 
-    // Initialize the database
-    db.init(function (err) {
-      if (err) {
-        console.log("Error initializing DB");
-        process.exit(-1);
-      }
+process.on('uncaughtException', function (err) {
+  console.log('Caught exception: ' + err);
+});
 
-      app.use(function(req,res,next){
-        req.db = m;
-        next();
-      });
-      require("./routes")(app);
+app.use(function(err, req, res, next){
+    console.error(err.stack);
+    res.status(500).send(new response('Data Something went wrong!'));
+});
 
-      app.listen(process.env.PORT || 5451, function (err) {
-        console.log(" Server listening ");
-        cb(err);
-      });
-    });
-  });
-}
-if (module.parent) {
-  module.exports = exports = start;
-} else {
-  start();
-}
+//starts and listen to the port
+app.listen(port, function(){
+  console.log("Server started in %d", port);
+});
 
-module.exports.cleanup = function() {
-    console.log("Worker PID#" + process.pid + " stop accepting new connections");
-    app.close(function (err) {
-      console.log("Worker PID#" + process.pid + " shutting down!!!");
-      process.send({cmd: 'suicide'});
-    });
+routes(app);
+
 }

@@ -12,6 +12,7 @@ var mail = require("../helpers/mail.js");
 
 //Join a user to the app
 exports.createUserProfile = function(req, res, next){
+  debugger;
   var imageType = req.body.imagetype;
   var imageUri = req.body.image;
   var mobile = req.body.mobile;
@@ -276,7 +277,6 @@ User.findOne({'email':email}, function(err, user){
 }
 
 //sending the password file
-debugger;
 exports.sendPasswordFile = function(req, res, next) {
   var id = req.params.id;
   var link = "http://127.0.0.1:1234/api/sendfile"+id;
