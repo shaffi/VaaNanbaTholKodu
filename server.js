@@ -8,7 +8,6 @@ var db = require('./helpers/db');
 var routes = require('./routes');
 var response = require("./helpers/common").response;
 
-
 var app = express();
 var port = Number(process.env.PORT) || '5451';
 
