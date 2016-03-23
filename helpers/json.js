@@ -3,6 +3,7 @@ var User = require('../models/user');
 var Support = require('../models/support');
 
 module.exports.getUserModel = function(data, callback){
+  console.log(data);
   var newUser = new User ({
     name: data.name,
     mobile: data.mobile,
@@ -26,6 +27,7 @@ module.exports.getUserModel = function(data, callback){
     comments : data.comments
   });
   callback(newUser);
+  console.log("data added");
 }
 
 
