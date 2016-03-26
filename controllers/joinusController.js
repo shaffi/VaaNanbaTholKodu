@@ -278,15 +278,16 @@ User.findOne({'email':email}, function(err, user){
 
 //sending the password file
 exports.sendPasswordFile = function(req, res, next) {
-  var id = req.params.id;
+  debugger;
+ var id = req.params.id;
+  console.log("Got id");
   var link = "http://127.0.0.1:1234/api/sendfile"+id;
-  User.findById(id,function(err,user){
-    if(user != null && user != ""){
-    console.log(id + "hjdk" + link);
-    res.status(200).sendFile(path.join(__dirname, '../views', 'index.html'));
-    console.log("sent!!");
-    return next();
-  }
+  console.log("got link");
+ User.findById(id,function(err,user){
+   if(user != null && user != "" ){
+    res.sendFile(path.join(__dirname, '../views', 'index.html'));
+   console.log("sent!!");
+ }
   else {
     res.status(200).send("Sorry ,You are not an authorised user");
     return next();
