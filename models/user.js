@@ -5,7 +5,7 @@ var userSchema = new mongoose.Schema({
   mobile: {type: Number, required:true, unique: true},
   altnum: {type: Number, required:true},
   _password: {type: String, required: true},
-  dob: Date,
+  dob: String,
   email: {type: String, required: true},
   about: String,
   proof: String,
