@@ -288,20 +288,7 @@ exports.sendPasswordFile = function(req, res, next) {
    if(user != null && user != "" ){
     res.sendFile(path.join(__dirname, '../views', 'index.html'));
    console.log("sent!!");
-  /* var _password = req.body._password;
-   //User.findById(id,function(err, user){
-   if(err) return next(err);
-   user._password = _password;
-   user.save(function(err, user)
-     {
-      if(err) throw err;
-       console.log(user.name);
-       res.status(200).send("Password Successfully resetted"+ user._password);
-       console.log(user._password);
-       return next();
-     });
-   //});*/
-  }
+   }
   else {
     res.status(200).send("Sorry ,You are not an authorised user");
     return next();
