@@ -24,5 +24,5 @@ module.exports = function(app){
   app.get('/api/forgotpassword/:email',joinusController.forgotPassword);
   app.post('/api/logout/:id',joinusController.logout);
   app.get('/api/sendfile/:id',joinusController.sendPasswordFile);
-  app.post('/api/changepassword',joinusController.changePassword);
+  app.post('/api/changepassword/:id',joinusController.changePassword);
 }

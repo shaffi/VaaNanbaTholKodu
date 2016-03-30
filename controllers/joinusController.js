@@ -197,17 +197,20 @@ exports.signIn = function(req,res,next){
   var _password = req.body._password;
   User.findOne({"mobile": mobile}, function(err, user) {
     if(user!= null && user!= "") {
-       if(user._password== _password) {
+       if(user._password == _password) {
           console.log(user._password);
           res.status(200).send("Sign in" +user);
           return next();
               }
         else {
-                res.status(200).send("Invalid  password");
+               console.log("Invalid password" +user._password);
+               res.status(200).send("Invalid  password");
                 return next();
+                console.log("Invalid password" +user._password);
              }
        }
       else {
+        console.log("Wrong details");
         res.status(200).send("Invalid mobile number or password");
         return next();
       }
@@ -298,8 +301,6 @@ exports.sendPasswordFile = function(req, res, next) {
 
 //Resetting Password
 exports.changePassword = function(req,res,next){
- var id = req.body._id;
- var _password = req.body._password;
  User.findById(id,function(err, user){
  if(err) return next(err);
  user._password = _password;
