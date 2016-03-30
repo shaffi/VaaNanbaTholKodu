@@ -10,23 +10,27 @@
 </head>
 <body>
   <div style="margin:100px;">
-    <div class="jumbotron"  style="padding:40px;">
+    <p>If you have forgotten your password please reset here<p>
+    <div class="jumbotron"  style="padding:40px;height:400px;width:450px">
       <h1><p>If you have forgotten your password please reset here<p></h1>
       <input class="form-control input-lg" placeholder="New Password"  type="password" id ="password"><br>
       <input class="form-control input-lg" placeholder="Confirm Password"  type="password"><br>
       <p><a class="btn btn-primary btn-lg"  role="button"  id="button" onClick="push()" >Reset</a></p>
     </div>
   </div>
+  <label>OUTPUT</label>
+  <div id='output'>
+  </div>
 </body>
 <script src="https://code.jquery.com/jquery-1.12.2.min.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>
 <script type="text/javascript">
-/*  function push(){
-    var password = $('#password').;
+ function push(){
+    var password = $('#password').val();
     console.log(password);
       $.ajax({
         type: "POST",
-        url: "http://vaananba.herokuapp.com/api/sendfile",
+        url: "http://vaananba.herokuapp.com/api/changepassword",
         data: JSON.stringify({"password": password}),
         cache: false,
         headers: {'Content-Type': 'application/json'},
@@ -38,6 +42,5 @@
         }
       });
   }
-*/
 </script>
 </html>
