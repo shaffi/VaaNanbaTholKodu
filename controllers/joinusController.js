@@ -204,14 +204,14 @@ exports.signIn = function(req,res,next){
               }
         else {
                console.log("Invalid password" +user._password);
-               res.status(200).send("Invalid  password");
+               res.status(400).send("Invalid  password");
                 return next();
                 console.log("Invalid password" +user._password);
              }
        }
       else {
         console.log("Wrong details");
-        res.status(200).send("Invalid mobile number or password");
+        res.status(400).send("Invalid mobile number or password");
         return next();
       }
 });
