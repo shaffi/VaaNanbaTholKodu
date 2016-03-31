@@ -70,7 +70,7 @@ exports.supporterMemberList =function(req,res,next){
       });
         if(limit<=count){
           if(inc!=0){
-            console.log("listed")''
+            console.log("listed");
             res.status(200).send(JSON.stringify(user));
             return next();
           }
