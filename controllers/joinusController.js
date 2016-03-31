@@ -76,7 +76,7 @@ exports.memberList = function(req, res, next){
    var inc = 0;
    var limit = req.body.limit;
    var start = req.body.start;
-
+   console.log(start  + limit);
    User.list({ start: start , limit: limit , sort: 'name'},function(err,count,user){
      if(err) return next(err);
      user.forEach(function(){
@@ -94,10 +94,12 @@ exports.memberList = function(req, res, next){
      }
      else {
        if(inc != 0){
+         console.log("listed");
          res.status(200).send(JSON.stringify(user));
          return next();
        }
        else {
+         console.log("no user exists");
          res.status(200).send("No more user");
          return next();
        }
@@ -111,6 +113,7 @@ exports.userImage = function(req,res,next){
     User.findById(id,function(err,user){
       if(err) return next(err);
       var img= user.image;
+      console.log("image viewed");
       res.status(200).send(new response(img));
       return next();
     });
@@ -160,7 +163,7 @@ exports.updateProfile = function(req, res, next){
  var zipcode = req.body.zipcode;
  var comments = req.body.comments;
  var id = req.body._id;
-
+ console.log("got data");
  User.findById(id, function(err, user) {
  if(err) return next(err);
  user.name = name;
@@ -185,6 +188,7 @@ exports.updateProfile = function(req, res, next){
  user.save(function(err, user) {
   if(err) next(err);
     console.log(user);
+    console.log("updated profile");
     res.status(200).send(new response(user));
     return next();
   });
@@ -230,12 +234,14 @@ exports.updateImages = function(req,res,next){
        user.image = result.url;
        user.save(function(err, userdata){
          if(err) return next(err);
+         console.log("image updated");
          res.status(200).send(new response(userdata.image));
          return next();
        });
      });
    }
    else {
+     console.log("user not exists");
        res.status(200).send("No user");
        return next();
    }
@@ -245,9 +251,11 @@ exports.updateImages = function(req,res,next){
 //Viewing the user profile
 exports.viewProfile = function(req,res,next){
   var id = req.params.id;
+  console.log(id);
   User.findById(id,function(err,user){
     if(err) return next(err);
     res.status(200).send(new response(user));
+    console.log("profile viewed!");
     return next();
   });
 }
@@ -272,6 +280,7 @@ User.findOne({'email':email}, function(err, user){
       }
       });
   } else {
+    console.log("no user");
     res.status(400).send('No user found');
     return next();
   }
@@ -293,6 +302,7 @@ exports.sendPasswordFile = function(req, res, next) {
    console.log("sent!!");
    }
   else {
+    console.log("no user");
     res.status(200).send("Sorry ,You are not an authorised user");
     return next();
   }
@@ -301,13 +311,14 @@ exports.sendPasswordFile = function(req, res, next) {
 
 //Resetting Password
 exports.changePassword = function(req,res,next){
+ var _password = req.params._password;
  User.findById(id,function(err, user){
  if(err) return next(err);
  user._password = _password;
  user.save(function(err, user)
    {
     if(err) throw err;
-     console.log(user.name);
+     console.log(user.name );
      res.status(200).send("Password Successfully resetted"+ user._password);
      console.log(user._password);
      return next();
@@ -319,10 +330,12 @@ exports.logout = function(req,res,next){
   var id = req.params.id;
   User.findById(id,function(err,user){
     if(user!= null && user!= ""){
+      console.log("log out sucess");
        res.status(200).send("Logged out Successfully");
        return next();
      }
      else {
+       console.log("Invalid user");
        res.status(200).send("Invalid User");
        return next();
      }

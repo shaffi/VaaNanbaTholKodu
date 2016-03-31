@@ -16,6 +16,7 @@ exports.supportUS =function(req,res,next){
 var mobile = req.body.mobile;
   Support.find({"mobile": mobile}, function(err, user){
     if(user != null && user != ""){
+      console.log("user exists");
       res.status(200).send(new response("User already exist with this mobile number"));
       return next();
     }
@@ -61,6 +62,7 @@ exports.supporterMemberList =function(req,res,next){
  var inc = 0;
  var start = req.body.start;
  var limit = req.body.limit;
+ console.log(start + limit);
   Support.list({start :start ,limit :limit ,sort:'name'},function(err,count,user){
       if(err) return next(err);
       user.forEach(function(){
@@ -68,20 +70,24 @@ exports.supporterMemberList =function(req,res,next){
       });
         if(limit<=count){
           if(inc!=0){
+            console.log("listed")''
             res.status(200).send(JSON.stringify(user));
             return next();
           }
           else{
+            console.log("no user");
             res.status(200).send("No more user");
             return next();
           }
         }
         else{
           if(inc!=0){
+            console.log("listed");
             res.status(200).send(JSON.stringify(user));
             return next();
           }
           else{
+            console.log("no user");
             res.status(200).send("No more user");
             return next();
           }
