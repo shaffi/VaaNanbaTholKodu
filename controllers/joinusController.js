@@ -87,7 +87,7 @@ exports.memberList = function(req, res, next){
        if(inc != 0){
          console.log("viewed");
          res.status(200).send(JSON.stringify(user));
-         //return next();
+         return next();
        }
        else {
          res.status(200).send("No more user");
@@ -98,7 +98,7 @@ exports.memberList = function(req, res, next){
        if(inc != 0){
          console.log("listed");
          res.status(200).send(JSON.stringify(user));
-        // return next();
+         return next();
        }
        else {
          console.log("no user exists");
