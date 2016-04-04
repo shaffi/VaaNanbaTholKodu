@@ -76,7 +76,8 @@ exports.memberList = function(req, res, next){
    var inc = 0;
    var limit = req.body.limit;
    var start = req.body.start;
-   console.log(start  + limit);
+   console.log("Start is:" +start );
+   console.log("Limit is:" + limit);
    User.list({ start: start , limit: limit , sort: 'name'},function(err,count,user){
      if(err) return next(err);
      user.forEach(function(){
@@ -84,8 +85,9 @@ exports.memberList = function(req, res, next){
      });
      if(limit <= count){
        if(inc != 0){
+         console.log("viewed");
          res.status(200).send(JSON.stringify(user));
-         return next();
+         //return next();
        }
        else {
          res.status(200).send("No more user");
@@ -96,7 +98,7 @@ exports.memberList = function(req, res, next){
        if(inc != 0){
          console.log("listed");
          res.status(200).send(JSON.stringify(user));
-         return next();
+        // return next();
        }
        else {
          console.log("no user exists");
