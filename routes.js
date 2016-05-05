@@ -22,7 +22,7 @@ module.exports = function(app){
   app.get('/api/viewprofile/:id',joinusController.viewProfile);
   app.post('/api/signin',joinusController.signIn);
   app.get('/api/forgotpassword/:email',joinusController.forgotPassword);
-  app.post('/api/logout/:id',joinusController.logout);
+  app.delete('/api/logout/:id',joinusController.logout);
   app.get('/api/sendfile/:id',joinusController.sendPasswordFile);
   app.post('/api/changepassword/:id',joinusController.changePassword);
 }
